@@ -1,0 +1,67 @@
+﻿@model FootballLeague.Common.ViewModels.TeamViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Edit Team</h2>
+<div class="row">
+    <div class="col-md-6">
+        <section>
+            <form asp-area="Admin" asp-controller="Team" asp-action="Edit" method="post">
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Points)
+                @Html.HiddenFor(x => x.Wins)
+                @Html.HiddenFor(x => x.Draws)
+                @Html.HiddenFor(x => x.Losses)
+                @Html.HiddenFor(x => x.GoalsReceived)
+                @Html.HiddenFor(x => x.GoalsScored)
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name">Name *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Logo">Logo URL</label>
+                    <input asp-for="Logo" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-warning">Edit</button>
+                <button type="button" data-toggle="modal" data-target="#delete-modal" data-backdrop="static" class="btn btn-danger">Delete</button>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div id="delete-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Team</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <b>@Model.Name</b>?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-area="Admin" asp-controller="Team" asp-action="Delete" method="post">
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.Name)
+                    @Html.HiddenFor(x => x.Logo)
+                    @Html.HiddenFor(x => x.Points)
+                    @Html.HiddenFor(x => x.Wins)
+                    @Html.HiddenFor(x => x.Draws)
+                    @Html.HiddenFor(x => x.Losses)
+                    @Html.HiddenFor(x => x.GoalsReceived)
+                    @Html.HiddenFor(x => x.GoalsScored)
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

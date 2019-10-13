@@ -1,0 +1,11 @@
+﻿@model FootballLeague.Common.ViewModels.MatchViewModel
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 details" style="text-align: center">
+        <img style="width: 20px" 
+             src="@(Model.HomeTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")"/>
+        <span>@Model.HomeTeam.Name</span> - <span>@Model.HomeGoals</span> : <span>@Model.AwayGoals</span> - <span>@Model.AwayTeam.Name</span>
+        <img style="width: 20px" 
+             src="@(Model.AwayTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")"/>
+    </div>
+</div>

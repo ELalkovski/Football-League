@@ -1,0 +1,11 @@
+﻿@{
+    bool isAdmin = User.IsInRole("Admin");
+    if (isAdmin)
+    {
+        Layout = "../../Areas/Admin/Views/Shared/_Layout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }    
+}

@@ -1,0 +1,30 @@
+﻿@model FootballLeague.Common.ViewModels.TeamViewModel
+@{ 
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Add New Team</h2>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-area="Admin" asp-controller="Team" asp-action="Add" method="post">
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name">Name *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Logo">Logo URL</label>
+                    <input asp-for="Logo" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-success">Add</button>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

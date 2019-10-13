@@ -1,0 +1,17 @@
+﻿@model FootballLeague.Common.ViewModels.TeamViewModel
+
+<tr>
+    <td>
+    </td>
+    <td>
+        <a asp-area="Admin" asp-controller="Team" asp-action="Details" asp-route-id="@Model.Id">
+            <img src="@(Model.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")" style="width: 20px" /> @Model.Name
+        </a>
+    </td>
+    <td>@Model.Wins</td>
+    <td>@Model.Draws</td>
+    <td>@Model.Losses</td>
+    <td>@Model.GoalsScored</td>
+    <td>@Model.GoalsReceived</td>
+    <td>@Model.Points</td>
+</tr>

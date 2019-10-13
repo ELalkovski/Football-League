@@ -1,0 +1,166 @@
+﻿@model FootballLeague.Common.ViewModels.MatchViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Add Match</h2>
+<div class="row">
+    <div class="col-md-6">
+        <section>
+            <form asp-area="Admin" asp-controller="Match" asp-action="Add" method="post">
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Date"></label>
+                    <input type="date" asp-for="Date" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HomeTeamId">Home Team</label>
+                    <select id="home-teams" class="form-control"
+                            asp-for="HomeTeamId">
+                        <option>Select home team...</option>
+                    </select>
+                    <span asp-validation-for="HomeTeamId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AwayTeamId">Away Team</label>
+                    <select id="away-teams" class="form-control"
+                            asp-for="AwayTeamId">
+                        <option>Select away team...</option>
+                    </select>
+                    <span asp-validation-for="AwayTeamId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label asp-for="HomeGoals">Home Goals</label>
+                            <input asp-for="HomeGoals" type="number" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="AwayGoals">Away Goals</label>
+                            <input asp-for="AwayGoals" type="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group pull-right">
+                    <button type="submit" class="btn btn-success">Add</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let homeTeamId;
+        let awayTeamId;
+        let availableTeams;
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/Team/GetTeams',
+                method: 'GET',
+            }).then(function (teams) {
+                availableTeams = teams;
+                $('#home-teams').empty();
+                $('#away-teams').empty();
+
+                $('#home-teams').append($('<option>')
+                    .text('Select home team...')
+                    .prop('selected', 'selected'));
+
+                $('#away-teams').append($('<option>')
+                    .text('Select away team...')
+                    .prop('selected', 'selected'));
+
+                $.each(teams, function (index, value) {
+                    let currentTeam = teams[index];
+                    let currentOption = $('<option>')
+                        .text(currentTeam.name)
+                        .val(currentTeam.id);
+
+                    $('#home-teams, #away-teams').append($(currentOption));
+                });
+            });
+        });
+
+        $('#home-teams').change(function () {
+            homeTeamId = Number($(this).find('option:selected').val());
+
+            if (awayTeamId === null) {
+                $('#away-teams').empty();
+                $('#away-teams').append($('<option>')
+                    .text('Select away team...')
+                    .prop('selected', 'selected'));
+
+                $.each(availableTeams, function (index, value) {
+                    let currentTeam = value;
+
+                    if (Number(currentTeam.id) !== homeTeamId) {
+                        let currentOption = $('<option>')
+                            .text(currentTeam.name)
+                            .val(currentTeam.id);
+
+                        $('#away-teams').append($(currentOption));
+                    }
+                });
+            } else {
+                $('#away-teams').empty();
+
+                $.each(availableTeams, function (index, value) {
+                    let currentTeam = value;
+
+                    if (Number(currentTeam.id) !== homeTeamId) {
+                        let currentOption = $('<option>')
+                            .text(currentTeam.name)
+                            .val(currentTeam.id);
+
+                        $('#away-teams').append($(currentOption));
+                    }
+                });
+                $('#away-teams').find(`option[value=${awayTeamId}]`).prop('selected', 'selected');
+            }
+        });
+
+        $('#away-teams').change(function () {
+            awayTeamId = Number($(this).find('option:selected').val());
+
+            if (homeTeamId === null) {
+                $('#home-teams').empty();
+                $('#home-teams').append($('<option>')
+                    .text('Select home team...')
+                    .prop('selected', 'selected'));
+
+                $.each(availableTeams, function (index, value) {
+                    let currentTeam = value;
+
+                    if (Number(currentTeam.id) !== awayTeamId) {
+                        let currentOption = $('<option>')
+                            .text(currentTeam.name)
+                            .val(currentTeam.id);
+
+                        $('#home-teams').append($(currentOption));
+                    }
+                });
+            } else {
+                $('#home-teams').empty();
+
+                $.each(availableTeams, function (index, value) {
+                    let currentTeam = value;
+
+                    if (Number(currentTeam.id) !== awayTeamId) {
+                        let currentOption = $('<option>')
+                            .text(currentTeam.name)
+                            .val(currentTeam.id);
+
+                        $('#home-teams').append($(currentOption));
+                    }
+                });
+                $('#home-teams').find(`option[value=${homeTeamId}]`).prop('selected', 'selected');
+            }
+        });
+    </script>
+}

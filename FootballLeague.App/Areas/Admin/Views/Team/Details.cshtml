@@ -1,0 +1,76 @@
+﻿@model FootballLeague.Common.ViewModels.TeamViewModel
+@{
+    var isAdmin = User.IsInRole("Admin");
+    Layout = isAdmin ? "../Shared/_Layout.cshtml" : "~/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="details-container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details" style="text-align: center">
+                <img src="@(Model.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")" style="width: 9em" />
+                <h1>@Model.Name</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Wins:</h2>
+                <h2 class="pull-right">@Model.Wins</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Draws:</h2>
+                <h2 class="pull-right">@Model.Draws</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Losses:</h2>
+                <h2 class="pull-right">@Model.Losses</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Goals Scored:</h2>
+                <h2 class="pull-right">@Model.GoalsScored</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Goals Received:</h2>
+                <h2 class="pull-right">@Model.GoalsReceived</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details">
+                <h2 class="pull-left">Points:</h2>
+                <h2 class="pull-right">@Model.Points</h2>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details" style="text-align: center">
+                <h1>Home Played Matches</h1>
+            </div>
+        </div>
+        @Html.DisplayFor(x => x.HomeMatchesPlayed)
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 details" style="text-align: center">
+                <h1>Away Played Matches</h1>
+            </div>
+        </div>
+        @Html.DisplayFor(x => x.AwayMatchesPlayed)
+
+        @if (isAdmin)
+        {
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <a asp-area="Admin" asp-controller="Team" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning pull-right details-btn">
+                        Edit
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
