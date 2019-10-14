@@ -2,10 +2,21 @@
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3 details" style="text-align: center">
-        <img style="width: 20px" 
-             src="@(Model.HomeTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")"/>
-        <span>@Model.HomeTeam.Name</span> - <span>@Model.HomeGoals</span> : <span>@Model.AwayGoals</span> - <span>@Model.AwayTeam.Name</span>
-        <img style="width: 20px" 
-             src="@(Model.AwayTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")"/>
+        <img style="width: 20px"
+             src="@(Model.HomeTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")" />
+        <span>
+            <a asp-area="Admin" asp-controller="Team" asp-action="Details" asp-route-id="@Model.HomeTeam.Id">@Model.HomeTeam.Name</a>
+        </span> - <span>@Model.HomeGoals</span> : <span>@Model.AwayGoals</span> -
+        <span>
+            <a asp-area="Admin" asp-controller="Team" asp-action="Details" asp-route-id="@Model.AwayTeam.Id">@Model.AwayTeam.Name</a>
+        </span>
+        <img style="width: 20px"
+             src="@(Model.AwayTeam.Logo ?? "https://www.designfreelogoonline.com/wp-content/uploads/2015/12/000668-Free-football-Logo-design-01.png")" />
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-area="Admin" asp-controller="Match" asp-action="Edit" asp-route-id="@Model.Id" class="pull-right">
+                <i class="fas fa-edit" style="color:orange"></i>
+            </a>
+        }
     </div>
 </div>

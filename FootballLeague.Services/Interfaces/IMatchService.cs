@@ -7,7 +7,8 @@ namespace FootballLeague.Services.Interfaces
     public interface IMatchService
     {
         Task Create(Match model);
-        Task<Match> Get(int id);        
         Task Update(Match model);
+        Task<Match> Get(int id);
+        Task<IList<Match>> List();
     }
 }

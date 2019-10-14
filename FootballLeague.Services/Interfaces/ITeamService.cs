@@ -12,7 +12,8 @@ namespace FootballLeague.Services.Interfaces
         Task<Team> Get(int id);
         Task<IList<Team>> List();
         Task Update(Team model);
-        Task UpdatePoints(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals);
+        Task UpdatePointsNewMatch(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals);
+        Task UpdatePointsRemovedMatch(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals);
         Task<IList<Match>> GetTeamHomeMatches(int homeTeamId);
         Task<IList<Match>> GetTeamAwayMatches(int awayTeamId);
     }

@@ -7,12 +7,14 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
@@ -33,6 +35,7 @@
                     <li><a asp-area="Admin" asp-controller="Team" asp-action="Add">Add Team</a></li>
                     <li><a asp-area="Admin" asp-controller="Match" asp-action="Add">Add Match</a></li>
                     <li><a asp-area="Admin" asp-controller="Team" asp-action="Table">Table</a></li>
+                    <li><a asp-area="Admin" asp-controller="Match" asp-action="List">Matches</a></li>
                 </ul>
                 <partial name="_LoginPartialAdmin" />
             </div>

@@ -1,0 +1,34 @@
+﻿@model IList<FootballLeague.Common.ViewModels.MatchViewModel>
+@{
+    ViewData["Title"] = "List";
+}
+
+@{
+    var isAdmin = User.IsInRole("Admin");
+    Layout = isAdmin ? "../Shared/_Layout.cshtml" : "~/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="details-container">
+        @{
+            var matchDays = Model.Select(x => x.Date).Distinct().ToList();
+
+            for (int i = 0; i < matchDays.Count; i++)
+            {
+                var currentDay = matchDays[i];
+                var matchesByDay = Model.Where(x => x.Date == currentDay).ToList();
+
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 details" style="text-align: center">
+                        <h2>@currentDay.ToShortDateString()</h2>
+                    </div>
+                </div>
+                for (int j = 0; j < matchesByDay.Count; j++)
+                {
+                    @Html.DisplayFor(x => matchesByDay[j])
+                }
+            }
+        }
+    </div>
+</section>
+

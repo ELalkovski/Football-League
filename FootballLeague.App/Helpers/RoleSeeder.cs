@@ -1,7 +1,4 @@
-﻿using FootballLeague.Common.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
 namespace FootballLeague.App.Helpers
@@ -20,7 +17,7 @@ namespace FootballLeague.App.Helpers
 
                 foreach (var role in roles)
                 {
-                    roleManager.CreateAsync(role);
+                    roleManager.CreateAsync(role).Wait();
                 }
             }
         }

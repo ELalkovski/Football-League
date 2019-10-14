@@ -51,7 +51,7 @@ namespace FootballLeague.Services
         public async Task<IList<Match>> GetTeamHomeMatches(int homeTeamId)
         {
             var matches = await this._db.Matches
-                .Where(x => x.HomeTeamId == homeTeamId)
+                .Where(x => !x.IsDeleted && x.HomeTeamId == homeTeamId)
                 .Include(x => x.HomeTeam)
                 .Include(x => x.AwayTeam)
                 .ToListAsync();
@@ -62,7 +62,7 @@ namespace FootballLeague.Services
         public async Task<IList<Match>> GetTeamAwayMatches(int awayTeamId)
         {
             var matches = await this._db.Matches
-                .Where(x => x.AwayTeamId == awayTeamId)
+                .Where(x => !x.IsDeleted && x.AwayTeamId == awayTeamId)
                 .Include(x => x.HomeTeam)
                 .Include(x => x.AwayTeam)
                 .ToListAsync();
@@ -70,26 +70,64 @@ namespace FootballLeague.Services
             return matches;
         }
 
-        public async Task UpdatePoints(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals)
+        public async Task UpdatePointsNewMatch(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals)
         {
             if (homeGoals > awayGoals)
             {
-                homeTeam.Points += WinPoints;                
+                homeTeam.Points += WinPoints;
+                homeTeam.Wins++;
+                awayTeam.Losses++;
             }
             else if (homeGoals < awayGoals)
             {
                 awayTeam.Points += WinPoints;
+                awayTeam.Wins++;
+                homeTeam.Losses++;
             }
             else
             {
                 homeTeam.Points += DrawPoints;
                 awayTeam.Points += DrawPoints;
+                homeTeam.Draws++;
+                awayTeam.Draws++;
             }
 
             homeTeam.GoalsScored += homeGoals;
             homeTeam.GoalsReceived += awayGoals;
             awayTeam.GoalsScored += awayGoals;
             awayTeam.GoalsReceived += homeGoals;
+
+            this._db.Teams.Update(homeTeam);
+            this._db.Teams.Update(awayTeam);
+            await this._db.SaveChangesAsync();
+        }
+
+        public async Task UpdatePointsRemovedMatch(Team homeTeam, Team awayTeam, int homeGoals, int awayGoals)
+        {
+            if (homeGoals > awayGoals)
+            {
+                homeTeam.Points -= WinPoints;
+                homeTeam.Wins--;
+                awayTeam.Losses--;
+            }
+            else if (homeGoals < awayGoals)
+            {
+                awayTeam.Points -= WinPoints;
+                awayTeam.Wins--;
+                homeTeam.Losses--;
+            }
+            else
+            {
+                homeTeam.Points -= DrawPoints;
+                awayTeam.Points -= DrawPoints;
+                homeTeam.Draws--;
+                awayTeam.Draws--;
+            }
+
+            homeTeam.GoalsScored -= homeGoals;
+            homeTeam.GoalsReceived -= awayGoals;
+            awayTeam.GoalsScored -= awayGoals;
+            awayTeam.GoalsReceived -= homeGoals;
 
             this._db.Teams.Update(homeTeam);
             this._db.Teams.Update(awayTeam);

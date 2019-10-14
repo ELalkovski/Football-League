@@ -2,7 +2,6 @@
 using FootballLeague.Data;
 using FootballLeague.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,14 +23,31 @@ namespace FootballLeague.Services
             await this._db.SaveChangesAsync();
         }
 
-        public async Task<Match> Get(int id)
+        public async Task Update(Match model)
         {
-            throw new NotImplementedException();
+            this._db.Matches.Update(model);
+            await this._db.SaveChangesAsync();
         }
 
-        public Task Update(Match model)
+        public async Task<Match> Get(int id)
         {
-            throw new NotImplementedException();
+            var match = await this._db.Matches
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return match;    
+        }
+
+        public async Task<IList<Match>> List()
+        {
+            var matches = await this._db.Matches
+                .Where(x => !x.IsDeleted)
+                .Include(x => x.HomeTeam)
+                .Include(x => x.AwayTeam)
+                .ToListAsync();
+
+            return matches;
         }
     }
 }
